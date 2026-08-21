@@ -1,0 +1,21 @@
+# Build outputs
+.build-tools/
+android/.gradle/
+android/build/
+android/app/build/
+
+# Local Android config
+android/local.properties
+android/keystore.properties
+android/app/release/*.jks
+*.jks
+
+# Debug/local artifacts
+LifeDays-debug.apk
+*.log
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
