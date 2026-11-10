@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.NumberFormat;
 import java.time.LocalDate;
@@ -34,7 +35,9 @@ public class MainActivity extends Activity {
     private Button birthdayButton;
     private Button editButton;
     private Button reminderButton;
+    private Button shareButton;
     private LocalDate birthday;
+    private int todayMilestone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +137,17 @@ public class MainActivity extends Activity {
         nextParams.setMargins(0, dp(18), 0, 0);
         card.addView(nextView, nextParams);
 
+        shareButton = button(getString(R.string.share_button));
+        shareButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_share, 0, 0, 0);
+        shareButton.setCompoundDrawablePadding(dp(9));
+        shareButton.setOnClickListener(v -> shareToday());
+        LinearLayout.LayoutParams shareParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                dp(42)
+        );
+        shareParams.setMargins(0, dp(16), 0, 0);
+        card.addView(shareButton, shareParams);
+
         reminderButton = button("\u5f00\u542f\u51c6\u65f6\u63d0\u9192");
         reminderButton.setOnClickListener(v -> handleReminderAction());
         LinearLayout.LayoutParams reminderParams = new LinearLayout.LayoutParams(
@@ -178,6 +192,8 @@ public class MainActivity extends Activity {
     }
 
     private void render() {
+        todayMilestone = 0;
+        shareButton.setVisibility(View.GONE);
         if (birthday == null) {
             hintView.setText("\u5148\u8bbe\u7f6e\u751f\u65e5");
             daysView.setText("--");
@@ -194,13 +210,22 @@ public class MainActivity extends Activity {
         birthdayButton.setVisibility(View.GONE);
         editButton.setVisibility(View.VISIBLE);
 
-        List<Integer> upcoming = Milestones.upcomingSpecialDays(birthday, LocalDate.now(), 1);
-        if (upcoming.isEmpty()) {
-            nextView.setText("\u63a5\u4e0b\u6765\u7684\u65e5\u5b50\uff0c\u4e5f\u90fd\u7b97\u6570\u3002");
+        if (Milestones.isSpecialDay(lived)) {
+            todayMilestone = (int) lived;
+            nextView.setText(getString(
+                    R.string.milestone_today,
+                    NumberFormat.getInstance(Locale.CHINA).format(lived)
+            ));
+            shareButton.setVisibility(View.VISIBLE);
         } else {
-            int next = upcoming.get(0);
-            LocalDate date = Milestones.dateForMilestone(birthday, next);
-            nextView.setText("\u4e0b\u4e00\u4e2a\u63d0\u9192\uff1a\u7b2c " + next + " \u5929\uff0c" + date);
+            List<Integer> upcoming = Milestones.upcomingSpecialDays(birthday, LocalDate.now(), 1);
+            if (upcoming.isEmpty()) {
+                nextView.setText("\u63a5\u4e0b\u6765\u7684\u65e5\u5b50\uff0c\u4e5f\u90fd\u7b97\u6570\u3002");
+            } else {
+                int next = upcoming.get(0);
+                LocalDate date = Milestones.dateForMilestone(birthday, next);
+                nextView.setText("\u4e0b\u4e00\u4e2a\u63d0\u9192\uff1a\u7b2c " + next + " \u5929\uff0c" + date);
+            }
         }
 
         if (needsReminderAction()) {
@@ -208,6 +233,19 @@ public class MainActivity extends Activity {
             reminderButton.setVisibility(View.VISIBLE);
         } else {
             reminderButton.setVisibility(View.GONE);
+        }
+    }
+
+    private void shareToday() {
+        if (birthday == null || todayMilestone <= 0) return;
+        boolean shared = MilestoneShareCard.share(
+                this,
+                birthday,
+                todayMilestone,
+                LocalDate.now()
+        );
+        if (!shared) {
+            Toast.makeText(this, R.string.share_unavailable, Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Icon;
 import android.os.Build;
 
 import java.time.LocalDate;
@@ -40,16 +41,30 @@ public class MilestoneReceiver extends BroadcastReceiver {
         String title = "\u4eca\u5929\u662f\u7b2c " + milestone + " \u5929";
         String body = "\u4e00\u4e2a\u5b89\u9759\u7684\u5c0f\u91cc\u7a0b\u7891\uff0c\u5df2\u7ecf\u8d70\u5230\u8fd9\u91cc\u4e86\u3002";
 
+        Intent shareIntent = new Intent(context, MilestoneShareActivity.class)
+                .putExtra(EXTRA_MILESTONE, milestone);
+        PendingIntent sharePendingIntent = PendingIntent.getActivity(
+                context,
+                8100 + milestone,
+                shareIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
+
         Notification.Builder builder = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
                 ? new Notification.Builder(context, CHANNEL_ID)
                 : new Notification.Builder(context);
-        Notification notification = builder
+        builder
                 .setSmallIcon(android.R.drawable.ic_dialog_info)
                 .setContentTitle(title)
                 .setContentText(body)
                 .setContentIntent(contentIntent)
                 .setAutoCancel(true)
-                .build();
+                .addAction(new Notification.Action.Builder(
+                        Icon.createWithResource(context, R.drawable.ic_share),
+                        context.getString(R.string.share_button),
+                        sharePendingIntent
+                ).build());
+        Notification notification = builder.build();
 
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (manager != null) {

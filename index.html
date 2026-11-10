@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>日痕 - 看见自己存在的天数</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='10' fill='%23F7FAF3'/%3E%3Ccircle cx='24' cy='24' r='14' fill='none' stroke='%236F8E5F' stroke-width='7'/%3E%3C/svg%3E">
-  <meta name="description" content="日痕是一款极简的生命天数记录 Android App，支持桌面小组件与特殊天数本地提醒。">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="description" content="日痕是一款极简的生命天数记录 Android App，支持桌面小组件、特殊天数提醒与纪念分享卡。">
   <style>
     :root {
       --bg: #f7faf3;
@@ -351,7 +351,7 @@
 
     .feature-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 18px;
     }
 
@@ -453,14 +453,16 @@
       font-size: 13px;
     }
 
+    @media (max-width: 1000px) {
+      .feature-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
     @media (max-width: 900px) {
       .hero {
         grid-template-columns: 1fr;
         min-height: auto;
         padding-top: 56px;
       }
-
-      .phone-wrap { order: -1; }
 
       .phone { width: min(100%, 320px); }
 
@@ -487,6 +489,7 @@
       .hero-stats { grid-template-columns: 1fr; margin-top: 30px; }
 
       .button { width: 100%; }
+      .nav .button { width: auto; }
 
       .hero-actions { align-items: stretch; }
 
@@ -535,7 +538,7 @@
       <div>
         <div class="eyebrow">Android 极简生命天数小组件</div>
         <h1 id="hero-title">日痕</h1>
-        <p class="lead">输入生日，日痕会把生命换算成一个清晰的数字：你已经存在了多少天。它安静、轻量、只做一件事，也在值得纪念的特殊天数提醒你停下来看看时间。</p>
+        <p class="lead">输入生日，日痕会把生命换算成一个清晰的数字：你已经存在了多少天。它安静、轻量、只做一件事，也会在值得纪念的特殊天数提醒你，并留下一张可以分享的纪念卡。</p>
         <div class="hero-actions">
           <a class="button button-primary" href="/download" download>下载日痕</a>
           <a class="button button-secondary" href="#features">了解功能</a>
@@ -570,7 +573,7 @@
     <section id="features" aria-labelledby="features-title">
       <div class="section-head">
         <h2 id="features-title">把时间放到眼前，但不打扰生活</h2>
-        <p>日痕保留最少的界面和最直接的交互：设置生日、查看天数、添加小组件，在特殊日子收到提醒。</p>
+        <p>日痕保留最少的界面和最直接的交互：设置生日、查看天数、添加小组件，在特殊日子收到提醒，也可以把这一天分享出去。</p>
       </div>
       <div class="feature-grid">
         <article class="feature-card">
@@ -587,6 +590,11 @@
           <div class="icon" aria-hidden="true">醒</div>
           <h3>特殊天数提醒</h3>
           <p>支持 100、365、1111、1234、9999、10000、12345 等纪念天数的本地通知。</p>
+        </article>
+        <article class="feature-card">
+          <div class="icon" aria-hidden="true">念</div>
+          <h3>纪念分享</h3>
+          <p>在特殊天数生成一张带有日期与诗句的分享卡片，把这一天轻轻留下。</p>
         </article>
       </div>
     </section>

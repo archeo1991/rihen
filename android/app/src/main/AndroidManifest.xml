@@ -19,6 +19,13 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".MilestoneShareActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:noHistory="true"
+            android:theme="@style/ShareProxyTheme" />
+
         <receiver
             android:name=".MilestoneReceiver"
             android:exported="false" />
@@ -44,5 +51,11 @@
                 <action android:name="android.intent.action.TIMEZONE_CHANGED" />
             </intent-filter>
         </receiver>
+
+        <provider
+            android:name=".ShareFileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true" />
     </application>
 </manifest>

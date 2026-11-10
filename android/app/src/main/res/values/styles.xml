@@ -6,4 +6,10 @@
         <item name="android:navigationBarColor">#F7FAF3</item>
         <item name="android:colorAccent">#6F8E5F</item>
     </style>
+
+    <style name="ShareProxyTheme" parent="android:style/Theme.Translucent.NoTitleBar">
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
 </resources>
