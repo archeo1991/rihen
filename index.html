@@ -139,6 +139,8 @@
       align-items: center;
     }
 
+    .hero > * { min-width: 0; }
+
     .eyebrow {
       display: inline-flex;
       align-items: center;
@@ -459,7 +461,7 @@
 
     @media (max-width: 900px) {
       .hero {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         min-height: auto;
         padding-top: 56px;
       }
